@@ -27,7 +27,7 @@ const styles = `
   }
 
   .container {
-    max-width: 900px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -217,6 +217,11 @@ const styles = `
     background: #222;
     margin-bottom: 20px;
   }
+  
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th { text-align: left; padding: 15px; border-bottom: 2px solid #555; }
+  td { padding: 15px; border-bottom: 1px solid #333; }
 `;
 
 // --- Components ---
@@ -366,6 +371,127 @@ const NetworkGraph = () => {
   )
 }
 
+const EvidenceBoard = () => (
+  <div className="evidence-board" style={{
+    background: '#2a2a2a', 
+    padding: '30px', 
+    borderRadius: '12px',
+    position: 'relative',
+    border: '4px solid #444',
+    minHeight: '400px',
+    margin: '30px 0',
+    overflow: 'hidden'
+  }}>
+    <h3 style={{fontFamily: 'Courier New', borderBottom: '2px solid #666', paddingBottom: '10px', marginTop: 0}}>CASE EVIDENCE #2025</h3>
+    
+    {/* Notes */}
+    <div style={{
+      background: '#fffcd4', color: '#000', padding: '15px', width: '200px',
+      position: 'absolute', top: '80px', left: '30px', transform: 'rotate(-5deg)',
+      boxShadow: '3px 3px 10px rgba(0,0,0,0.5)', fontFamily: 'cursive'
+    }}>
+      C4 (Angry) & C1 (Helpers) share 90% linguistic complexity!
+    </div>
+
+    <div style={{
+      background: '#ffcccc', color: '#000', padding: '15px', width: '220px',
+      position: 'absolute', top: '120px', right: '40px', transform: 'rotate(3deg)',
+      boxShadow: '3px 3px 10px rgba(0,0,0,0.5)', fontFamily: 'cursive'
+    }}>
+      Sentiment Analysis Fail: "I hate this" vs "I love this" - same structure!
+    </div>
+
+    <div style={{
+      background: '#d4f0ff', color: '#000', padding: '15px', width: '250px',
+      position: 'absolute', bottom: '50px', left: '150px', transform: 'rotate(1deg)',
+      boxShadow: '3px 3px 10px rgba(0,0,0,0.5)', fontFamily: 'cursive', zIndex: 10
+    }}>
+      NETWORK LOGS:
+      C4 &rarr; C1 (High Traffic)
+      C4 &rarr; C4 (Low Traffic)
+      They don't talk to each other!
+    </div>
+    
+    {/* Red Strings */}
+    <svg style={{position: 'absolute', top:0, left:0, width:'100%', height:'100%', pointerEvents:'none', zIndex: 1}}>
+      <line x1="130" y1="130" x2="350" y2="280" stroke="#d63031" strokeWidth="3" opacity="0.6" />
+      <line x1="250" y1="350" x2="400" y2="200" stroke="#d63031" strokeWidth="3" opacity="0.6" />
+    </svg>
+  </div>
+);
+
+const PlatformTable = () => (
+  <div style={{overflowX: 'auto'}}>
+    <table style={{width: '100%', borderCollapse: 'collapse', marginTop: '20px'}}>
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Limit</th>
+          <th>Angry Expression</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Twitter</td>
+          <td style={{color: '#888'}}>280 chars</td>
+          <td style={{color: 'var(--accent-red)'}}>"OMG THIS SUCKS"</td>
+        </tr>
+        <tr>
+          <td>YouTube</td>
+          <td style={{color: '#888'}}>~500 chars</td>
+          <td style={{color: 'var(--accent-red)'}}>"This is so dumb wtf"</td>
+        </tr>
+        <tr>
+          <td>Reddit</td>
+          <td style={{color: '#888'}}>∞</td>
+          <td style={{color: 'var(--accent-red)'}}>
+            "I must express my profound disappointment regarding the fundamental inadequacies..."
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+const PersonalityQuiz = () => {
+  const [result, setResult] = useState<string | null>(null);
+
+  return (
+    <div style={{background: '#1a1a1a', padding: '30px', borderRadius: '12px', marginTop: '30px', border: '1px solid #333'}}>
+      <h3 style={{textAlign: 'center'}}>🧩 Which Reddit Personality Are You?</h3>
+      {!result ? (
+        <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+          <p>Q: When you see a post you disagree with, you:</p>
+          <button className="btn" style={{background: '#333', color: '#fff', textAlign: 'left'}} onClick={() => setResult('C4')}>
+            A) Write a 3-paragraph rebuttal citing sources (but angrily).
+          </button>
+          <button className="btn" style={{background: '#333', color: '#fff', textAlign: 'left'}} onClick={() => setResult('C1')}>
+            B) Gently correct them and offer a helpful link.
+          </button>
+          <button className="btn" style={{background: '#333', color: '#fff', textAlign: 'left'}} onClick={() => setResult('C3')}>
+            C) Analyze the logical fallacies in their argument.
+          </button>
+        </div>
+      ) : (
+        <div style={{textAlign: 'center', animation: 'fadeIn 0.5s'}}>
+          <div style={{fontSize: '4rem', marginBottom: '10px'}}>
+            {result === 'C4' ? '😡' : result === 'C1' ? '😊' : '🤓'}
+          </div>
+          <h4 style={{fontSize: '1.5rem', marginBottom: '10px'}}>You are {result === 'C4' ? 'The Firestarter (C4)' : result === 'C1' ? 'The Helper (C1)' : 'The Analyst (C3)'}</h4>
+          <p style={{maxWidth: '500px', margin: '0 auto 20px auto'}}>
+            {result === 'C4' 
+              ? "You don't lack vocabulary, you just have a lot of feelings! You seek out debate." 
+              : result === 'C1' 
+                ? "You are the glue holding Reddit together. Everyone wants to talk to you because you're helpful." 
+                : "You value correctness over everything. You use big words to prove your point."}
+          </p>
+          <button className="btn btn-pos" onClick={() => setResult(null)}>Retake Quiz</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <>
@@ -458,6 +584,20 @@ const App = () => {
           </div>
         </section>
 
+        {/* Act V: The Evidence Board */}
+        <section>
+          <h2>Act V: The Evidence Board</h2>
+          <p>Piecing it all together, the picture becomes clear. The problem isn't intelligence—it's emotion.</p>
+          <EvidenceBoard />
+        </section>
+
+        {/* Act VI: The Platform Principle */}
+        <section>
+          <h2>Act VI: The Platform Principle</h2>
+          <p>Why is Reddit different from Twitter or YouTube? The platform constraints shape the rage.</p>
+          <PlatformTable />
+        </section>
+
         {/* Conclusion */}
         <section style={{borderBottom: 'none', paddingBottom: '100px'}}>
           <h2>The Verdict</h2>
@@ -473,8 +613,16 @@ const App = () => {
             <p>Angry people don't want to be alone. They want an audience. They target the most helpful nodes in the network.</p>
           </div>
 
+          <div className="law-card" style={{borderLeftColor: 'var(--accent-purple)'}}>
+            <h3>Law #3: The Platform Principle</h3>
+            <p>Your platform's constraints shape your rage. Reddit encourages "Smart Rage"—long, articulated, but still toxic.</p>
+          </div>
+
+          <PersonalityQuiz />
+
           <div style={{marginTop: '60px', textAlign: 'center', opacity: 0.6}}>
             <p>Data Story Project • Milestone P3 • 2025</p>
+            <p style={{fontSize: '0.8rem'}}>Built for Jekyll Assignment</p>
           </div>
         </section>
       </div>
